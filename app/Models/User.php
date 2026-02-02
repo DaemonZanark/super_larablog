@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'bio',
+        'avatar',
+        'instagram_url',
+        'twitter_url',
+        'portfolio_url',
     ];
 
     /**
@@ -44,5 +49,49 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($user) {
+            $user->articles->each->delete();
+
+            $user->comments()->delete();
+
+            $user->likes()->detach();
+
+            $user->followers()->detach();
+            $user->following()->detach();
+        });
+    }
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany(Article::class)->withTimestamps();
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'subscriptions', 'author_id', 'user_id')->withTimestamps();
+    }
+
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'subscriptions', 'user_id', 'author_id')->withTimestamps();
+    }
+
+    public function isSubscribedTo(User $author)
+    {
+        return $this->following()->where('author_id', $author->id)->exists();
     }
 }

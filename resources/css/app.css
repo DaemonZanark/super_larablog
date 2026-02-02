@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --hellfest-black: #0a0a0a;
+        --hellfest-gold: #c5a059;
+        --hellfest-red: #960000;
+        --hellfest-white: #e5e5e5;
+    }
+
+    body {
+        @apply bg-[#0a0a0a] text-[#e5e5e5] font-sans;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    .hf-card {
+        @apply bg-[#1a1a1a] border border-[#c5a059]/20 rounded-none shadow-xl hover:border-[#c5a059]/50 transition-all duration-300;
+    }
+
+    .hf-btn-primary {
+        @apply bg-[#c5a059] text-[#0a0a0a] font-bold py-2 px-6 uppercase tracking-widest hover:bg-[#e0bc7a] transition-colors duration-200 inline-block text-center;
+    }
+
+    .hf-btn-outline {
+        @apply border-2 border-[#c5a059] text-[#c5a059] font-bold py-2 px-6 uppercase tracking-widest hover:bg-[#c5a059] hover:text-[#0a0a0a] transition-all duration-200 inline-block text-center;
+    }
+
+    .hf-title {
+        @apply font-bold uppercase tracking-tighter text-[#c5a059] italic;
+    }
+}

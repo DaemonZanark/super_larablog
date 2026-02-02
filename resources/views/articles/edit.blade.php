@@ -1,37 +1,89 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Modifier l'article {{ $article->title ." ". $article->id }}
-        </h2>
+        MODIFIER : {{ $article->title }}
     </x-slot>
 
-    <form method="post" action="{{ route('articles.update', $article->id) }}" class="py-12">
-        @csrf
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                   <!-- Input de titret de l'article -->
-                   <input type="text" value="{{ $article->title }}" name="title" id="title" placeholder="Titre de l'article" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <form method="post" action="{{ route('articles.update', $article) }}" enctype="multipart/form-data" class="space-y-8">
+            @csrf
+            @method('PUT')
+
+            <div class="hf-card p-8 space-y-6">
+                <h3 class="text-[#c5a059] font-black uppercase tracking-widest text-sm border-b border-[#c5a059]/20 pb-4">Informations Générales</h3>
+
+                <div>
+                    <label for="title" class="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Titre de l'article</label>
+                    <input type="text" name="title" id="title" value="{{ old('title', $article->title) }}" class="w-full bg-[#111] border-[#c5a059]/30 text-white focus:border-[#c5a059] focus:ring-0 font-bold uppercase tracking-widest text-sm" placeholder="Saisissez le titre...">
+                    @error('title') <p class="text-red-600 text-[10px] mt-1 font-bold uppercase tracking-widest">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="p-6 pt-0 text-gray-900">
-                   <!-- Contenu de l'article -->
-                   <textarea rows="30" name="content" id="content" placeholder="Contenu de l'article" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ $article->content }}</textarea>
+                <div>
+                    <label for="image" class="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Image de couverture</label>
+                    @if($article->image)
+                        <div class="mb-4 relative group w-48 aspect-video overflow-hidden">
+                            <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover border border-[#c5a059]/30 grayscale group-hover:grayscale-0 transition">
+                            <div class="absolute inset-0 bg-[#0a0a0a]/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition font-black uppercase text-[8px] tracking-widest">Actuelle</div>
+                        </div>
+                    @endif
+                    <input type="file" name="image" id="image" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-[10px] file:font-black file:uppercase file:tracking-widest file:bg-[#c5a059] file:text-[#0a0a0a] hover:file:bg-[#e0bc7a] cursor-pointer">
+                    @error('image') <p class="text-red-600 text-[10px] mt-1 font-bold uppercase tracking-widest">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="p-6 text-gray-900 flex items-center">
-                    <!-- Action sur le formulaire -->
-                    <div class="grow">
-                        <input type="checkbox" name="draft" id="draft" {{ $article->draft ? 'checked' : '' }} class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                        <label for="draft">Article en brouillon</label>
-                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Modifier l'article
-                        </button>
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Catégories</label>
+                        <div class="space-y-3 max-h-48 overflow-y-auto p-4 bg-[#0a0a0a] border border-[#c5a059]/20 scrollbar-thin scrollbar-thumb-[#c5a059]/50 scrollbar-track-transparent">
+                            @foreach($categories as $category)
+                                <label class="flex items-center cursor-pointer group">
+                                    <div class="relative flex items-center">
+                                        <input type="checkbox" name="categories[]" value="{{ $category->id }}" {{ collect(old('categories', $article->categories->pluck('id')))->contains($category->id) ? 'checked' : '' }} class="peer w-4 h-4 bg-[#111] border-[#c5a059]/30 text-[#c5a059] focus:ring-0 rounded-none cursor-pointer appearance-none checked:bg-[#c5a059] border transition-colors">
+                                        <svg class="w-3 h-3 absolute left-0.5 pointer-events-none hidden peer-checked:block text-[#0a0a0a]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                    <span class="ml-3 text-[10px] font-bold uppercase tracking-widest text-gray-400 group-hover:text-[#c5a059] peer-checked:text-[#c5a059] transition">{{ $category->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                        @error('categories') <p class="text-red-600 text-[10px] mt-1 font-bold uppercase tracking-widest">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Tags</label>
+                        <div class="space-y-3 max-h-48 overflow-y-auto p-4 bg-[#0a0a0a] border border-[#c5a059]/20 scrollbar-thin scrollbar-thumb-[#c5a059]/50 scrollbar-track-transparent">
+                            @foreach($tags as $tag)
+                                <label class="flex items-center cursor-pointer group">
+                                    <div class="relative flex items-center">
+                                        <input type="checkbox" name="tags[]" value="{{ $tag->id }}" {{ collect(old('tags', $article->tags->pluck('id')))->contains($tag->id) ? 'checked' : '' }} class="peer w-4 h-4 bg-[#111] border-[#c5a059]/30 text-[#c5a059] focus:ring-0 rounded-none cursor-pointer appearance-none checked:bg-[#c5a059] border transition-colors">
+                                        <svg class="w-3 h-3 absolute left-0.5 pointer-events-none hidden peer-checked:block text-[#0a0a0a]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                    <span class="ml-3 text-[10px] font-bold uppercase tracking-widest text-gray-400 group-hover:text-[#c5a059] peer-checked:text-[#c5a059] transition">#{{ $tag->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                        @error('tags') <p class="text-red-600 text-[10px] mt-1 font-bold uppercase tracking-widest">{{ $message }}</p> @enderror
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
+
+            <div class="hf-card p-8 space-y-6">
+                <h3 class="text-[#c5a059] font-black uppercase tracking-widest text-sm border-b border-[#c5a059]/20 pb-4">Le Corps de l'Article</h3>
+
+                <div>
+                    <label for="content" class="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Contenu</label>
+                    <textarea name="content" id="content" rows="15" class="w-full bg-[#111] border-[#c5a059]/30 text-white focus:border-[#c5a059] focus:ring-0 font-bold tracking-widest text-sm leading-relaxed p-6" placeholder="Libérez votre créativité...">{{ old('content', $article->content) }}</textarea>
+                    @error('content') <p class="text-red-600 text-[10px] mt-1 font-bold uppercase tracking-widest">{{ $message }}</p> @enderror
+                </div>
+            </div>
+
+            <div class="hf-card p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center">
+                    <input type="checkbox" name="draft" id="draft" {{ old('draft', $article->draft) ? 'checked' : '' }} class="w-5 h-5 bg-[#111] border-[#c5a059]/30 text-[#c5a059] focus:ring-0 rounded-none cursor-pointer">
+                    <label for="draft" class="ml-3 text-xs font-black uppercase tracking-widest text-[#c5a059] cursor-pointer">Maintenir en brouillon</label>
+                </div>
+                <div class="flex gap-4">
+                    <a href="{{ route('articles.index') }}" class="hf-btn-outline py-2 px-8">Annuler</a>
+                    <button type="submit" class="hf-btn-primary py-2 px-8">Mettre à jour</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </x-app-layout>
