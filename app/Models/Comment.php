@@ -1,10 +1,33 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Comment
+ *
+ * @property int $id
+ * @property int|null $user_id
+ * @property int|null $article_id
+ * @property int|null $parent_id
+ * @property string $content
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ *
+ * @property User|null $user
+ * @property Article|null $article
+ * @property Comment|null $comment
+ * @property Collection|Comment[] $comments
+ *
+ * @package App\Models
+ */
 class Comment extends Model
 {
 	protected $table = 'comments';

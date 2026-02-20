@@ -1,16 +1,22 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    /** @use HasFactory<UserFactory> */
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -65,15 +71,15 @@ class User extends Authenticatable
         });
     }
 
-    public function articles()
-    {
-        return $this->hasMany(Article::class);
-    }
+	public function articles()
+	{
+		return $this->hasMany(Article::class);
+	}
 
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
-    }
+	public function comments()
+	{
+		return $this->hasMany(Comment::class);
+	}
 
     public function likes()
     {
@@ -94,4 +100,9 @@ class User extends Authenticatable
     {
         return $this->following()->where('author_id', $author->id)->exists();
     }
+
+	public function subscriptions()
+	{
+		return $this->hasMany(Subscription::class);
+	}
 }
