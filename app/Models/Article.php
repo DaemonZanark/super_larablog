@@ -1,20 +1,44 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
+/**
+ * Class Article
+ *
+ * @property int $id
+ * @property int|null $user_id
+ * @property string $title
+ * @property string|null $slug
+ * @property string $content
+ * @property string|null $image
+ * @property bool|null $draft
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property int $views_count
+ *
+ * @property User|null $user
+ * @property Collection|Category[] $categories
+ * @property Collection|Tag[] $tags
+ * @property Collection|Comment[] $comments
+ *
+ * @package App\Models
+ */
 class Article extends Model
 {
 	protected $table = 'articles';
 
 	protected $casts = [
 		'user_id' => 'int',
-		'draft' => 'bool'
+		'draft' => 'bool',
+		'views_count' => 'int'
 	];
 
 	protected $fillable = [
