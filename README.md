@@ -1,4 +1,4 @@
-# Larablog
+# GeekPlace
 
 Application de blog développée avec Laravel pour créer, gérer et partager des articles.
 
