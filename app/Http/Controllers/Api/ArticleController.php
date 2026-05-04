@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\User;
 
 class ArticleController extends Controller
 {
@@ -57,5 +58,64 @@ class ArticleController extends Controller
             'commentaires' => $article->comments,
             'created_at'   => $article->created_at->format('d/m/Y'),
         ]);
+    }
+
+
+    public function authors()
+    {
+        $authors = User::query()
+            ->whereHas('articles', function ($q) {
+                $q->where('draft', false);
+            })
+            ->withCount([
+                'articles as articles_count' => function ($q) {
+                    $q->where('draft', false);
+                }
+            ])
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        return response()->json($authors);
+    }
+
+    public function authors_articles(User $user)
+    {
+        $articles = $user->articles()
+            ->where('draft', false)
+            ->latest()
+            ->get([
+                'id',
+                'title',
+                'slug',
+                'created_at',
+                'views_count',
+                'image'
+            ]);
+
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'articles_count' => $articles->count(),
+            'articles' => $articles
+        ]);
+    }
+
+    public function destroy(Article $article)
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated.'], 401);
+        }
+
+        if (
+            $user->is_admin ||
+            $article->user_id === $user->id
+        ) {
+            $article->delete();
+
+            return response()->json(['message' => 'Article supprimé avec succès.']);
+        }
+        return response()->json(['message' => 'Action non autorisée.'], 403);
     }
 }

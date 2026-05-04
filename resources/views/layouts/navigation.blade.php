@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('accueil') }}" class="hf-title text-2xl italic tracking-tighter">
-                        LARABLOG
+                        GEEKPLACE
                     </a>
                 </div>
 

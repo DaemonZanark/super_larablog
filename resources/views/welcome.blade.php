@@ -4,7 +4,7 @@
             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent z-10"></div>
             <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Hellfest Atmosphere" class="absolute inset-0 w-full h-full object-cover opacity-50 grayscale hover:grayscale-0 transition duration-1000">
             <div class="relative z-20 text-center">
-                <h1 class="text-6xl md:text-8xl font-black hf-title mb-4 italic tracking-tighter">LARABLOG</h1>
+                <h1 class="text-6xl md:text-8xl font-black hf-title mb-4 italic tracking-tighter">GEEKPLACE</h1>
                 <p class="text-xl md:text-2xl text-[#c5a059] font-bold uppercase tracking-[0.2em]">L'art de l'écriture, la force des mots</p>
                 <div class="mt-8">
                     <a href="#latest" class="hf-btn-primary">Explorer les articles</a>

@@ -12,7 +12,7 @@
 
                 <div>
                     <label for="title" class="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Titre de l'article</label>
-                    <input type="text" name="title" id="title" value="{{ old('title') }}" class="w-full bg-[#111] border-[#c5a059]/30 text-white focus:border-[#c5a059] focus:ring-0 font-bold uppercase tracking-widest text-sm" placeholder="Saisissez le titre...">
+                    <input type="text" name="title" id="title" value="{{ old('title') }}" class="w-full bg-[#111] border-[#c5a059]/30 text-white focus:border-[#c5a059] focus:ring-0 font-bold tracking-widest text-sm" placeholder="Saisissez le titre...">
                     @error('title') <p class="text-red-600 text-[10px] mt-1 font-bold uppercase tracking-widest">{{ $message }}</p> @enderror
                 </div>
 

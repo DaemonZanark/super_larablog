@@ -28,13 +28,18 @@ Route::prefix('v1')->group(function () {
         Route::get('/stats/activity', [StatsController::class, 'activity']);
 
         Route::get('/articles', [ArticleController::class, 'index']);
-        Route::get('/articles/{article:slug}', [ArticleController::class, 'show']);
         Route::get('/articles/top', [ArticleController::class, 'top']);
+        Route::get('/articles/{article:slug}', [ArticleController::class, 'show']);
+        Route::delete('/articles/{article:id}', [ArticleController::class, 'destroy']);
+
+        Route::get('/authors', [ArticleController::class, 'authors']);
+        Route::get('/authors/{user}/articles', [ArticleController::class, 'authors_articles']);
 
         Route::get('/users', [UserController::class, 'index']);
         Route::get('/users/{user}', [UserController::class, 'show']);
 
         Route::get('/comments/latest', [CommentController::class, 'latest']);
+        Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
     });
 
 

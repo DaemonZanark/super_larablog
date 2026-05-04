@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             <div class="col-span-1 md:col-span-2">
-                <a href="{{ route('accueil') }}" class="text-3xl font-bold hf-title mb-4 block italic">LARABLOG</a>
+                <a href="{{ route('accueil') }}" class="text-3xl font-bold hf-title mb-4 block italic">GEEKPLACE</a>
                 <p class="text-gray-400 max-w-md">
                     Inspiré par l'esprit du plus grand festival de metal. Partagez vos passions, vos critiques et vos découvertes musicales sur une plateforme dédiée à la culture alternative.
                 </p>
@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="border-t border-[#c5a059]/10 pt-8 text-center text-xs text-gray-500 uppercase tracking-widest">
-            &copy; {{ date('Y') }} LARABLOG. ALL RIGHTS RESERVED. BEYOND THE BLOG.
+            &copy; {{ date('Y') }} GEEKPLACE. ALL RIGHTS RESERVED. BEYOND THE BLOG.
         </div>
     </div>
 </footer>
