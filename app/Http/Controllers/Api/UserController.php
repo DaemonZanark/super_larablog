@@ -50,4 +50,26 @@ class UserController extends Controller
             'top_articles'   => $articles,
         ]);
     }
+
+    public function show_users()
+    {
+        $user = User::query()->get();
+        return response()->json($user);
+    }
+    public function destroy(User $user)
+    {
+        $user_admin = auth()->user();
+
+        if (!$user_admin) {
+            return response()->json(['message' => 'Unauthenticated.'], 401);
+        }
+
+        if($user_admin->is_admin)
+        {
+            $user->articles()->detach();
+            $user->delete();
+
+            return response()->json(['message' => 'Utilisateurs supprimée.']);
+        }
+    }
 }
