@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/suivre/{user}', [UserController::class, 'suivreAuteur'])->name('auteurs.suivre');
 
+    Route::get('/telecharger', [UserController::class, 'downloadFile'])->name('download.file');
+
     Route::post('/notifications/marquer-lu', function() {
         Auth::user()->unreadNotifications->markAsRead();
         return back();

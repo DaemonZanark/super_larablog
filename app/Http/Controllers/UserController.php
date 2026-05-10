@@ -250,4 +250,63 @@ class UserController extends Controller
 
         abort(403, "Vous n'avez pas l'autorisation de supprimer ce commentaire.");
     }
+
+    /**
+     * Télécharger un fichier exécutable depuis le dossier app/download
+     */
+    public function downloadFile()
+    {
+        $downloadPath = app_path('download');
+
+        // Chercher les fichiers exécutables courants
+        $executableExtensions = ['exe', 'zip', 'msi', 'dll', 'bin', 'sh', 'rar', 'tar', 'gz'];
+        $files = [];
+
+        if (is_dir($downloadPath)) {
+            $allFiles = scandir($downloadPath);
+            foreach ($allFiles as $file) {
+                if ($file !== '.' && $file !== '..') {
+                    $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                    if (in_array($extension, $executableExtensions)) {
+                        $files[] = $file;
+                    }
+                }
+            }
+        }
+
+        // Si aucun fichier n'est trouvé
+        if (empty($files)) {
+            return back()->with('error', 'Aucun fichier disponible pour le téléchargement.');
+        }
+
+        // Prendre le premier fichier trouvé
+        $filename = $files[0];
+        $filepath = $downloadPath . '/' . $filename;
+
+        // Vérifier que le fichier existe et est sécurisé
+        if (!file_exists($filepath) || !is_file($filepath)) {
+            return back()->with('error', 'Le fichier n\'existe pas.');
+        }
+
+        // Déterminer le type MIME approprié
+        $mimeTypes = [
+            'exe' => 'application/octet-stream',
+            'zip' => 'application/zip',
+            'msi' => 'application/octet-stream',
+            'dll' => 'application/octet-stream',
+            'bin' => 'application/octet-stream',
+            'sh' => 'application/x-sh',
+            'rar' => 'application/x-rar-compressed',
+            'tar' => 'application/x-tar',
+            'gz' => 'application/gzip',
+        ];
+
+        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        $mimeType = $mimeTypes[$extension] ?? 'application/octet-stream';
+
+        return response()->download($filepath, $filename, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+    }
 }

@@ -51,6 +51,17 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
                 @auth
+                    <!-- Bouton de téléchargement -->
+                    @if(Auth::user()->isAdmin())
+                        <a href="{{ route('download.file') }}" class="inline-flex items-center px-3 py-2 border border-[#c5a059]/50 text-xs leading-4 font-bold uppercase tracking-widest text-[#c5a059] bg-transparent hover:text-white hover:border-white hover:bg-[#c5a059] focus:outline-none transition ease-in-out duration-150">
+                            <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                            </svg>
+                            Télécharger le client lourd
+                        </a>
+                    @endif
+
+
                     <!-- Notifications Dropdown -->
                     <x-dropdown align="right" width="80">
                         <x-slot name="trigger">

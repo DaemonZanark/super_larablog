@@ -66,7 +66,6 @@ class UserController extends Controller
 
         if($user_admin->is_admin)
         {
-            $user->articles()->detach();
             $user->delete();
 
             return response()->json(['message' => 'Utilisateurs supprimée.']);

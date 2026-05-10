@@ -65,7 +65,6 @@ class User extends Authenticatable
             $user->articles->each->delete();
 
             $user->comments()->delete();
-
             $user->likes()->detach();
 
             $user->followers()->detach();
@@ -101,6 +100,11 @@ class User extends Authenticatable
     public function isSubscribedTo(User $author)
     {
         return $this->following()->where('author_id', $author->id)->exists();
+    }
+
+    public function isAdmin()
+    {
+        return $this->is_admin === 1 || $this->is_admin === true;
     }
 
 	public function subscriptions()
