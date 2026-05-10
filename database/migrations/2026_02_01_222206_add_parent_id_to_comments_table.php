@@ -18,8 +18,7 @@ return new class extends Migration
         });
 
         Schema::table('comments', function (Blueprint $table) {
-            $table->bigInteger('parent_id')->nullable()->after('article_id');
-            $table->foreign('parent_id')->references('id')->on('comments')->onDelete('cascade');
+            $table->foreignId('parent_id')->nullable()->after('article_id')->constrained('comments')->cascadeOnDelete();
         });
     }
 
