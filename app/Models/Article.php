@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 /**
@@ -33,6 +34,8 @@ use Illuminate\Support\Facades\Storage;
  */
 class Article extends Model
 {
+    use HasFactory;
+
 	protected $table = 'articles';
 
 	protected $casts = [
